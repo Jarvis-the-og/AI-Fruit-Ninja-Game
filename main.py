@@ -18,6 +18,9 @@ score = 0
 
 clock = pygame.time.Clock()
 
+prev_x = None
+prev_y = None
+
 while True:
 
     screen.fill((30,30,30))
@@ -29,9 +32,19 @@ while True:
 
     # Get finger position
     x,y = tracker.get_hand_position()
+    prev_x, prev_y = None, None
 
-    if x and y:
+    # Get finger position
+    x, y = tracker.get_hand_position()
+
+    if x is not None and y is not None:
         pygame.draw.circle(screen,(0,255,0),(x,y),10)
+
+        if prev_x is not None and prev_y is not None:
+            pygame.draw.line(screen,(255,255,255),(prev_x,prev_y),(x,y),12)
+
+        prev_x = x
+        prev_y = y
 
     # Spawn fruits
     if len(fruits) < 5:
